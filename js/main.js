@@ -75,7 +75,7 @@ const toggleAuthDom = () => {
     if (user) {
       loginElem.style.display = 'none';
       userElem.style.display = '';
-      userNameElem.textContetnt = user.displayName;
+      userNameElem.textContent = user.displayName;
     } else {
       loginElem.style.display = '';
       userElem.style.display = 'none';
