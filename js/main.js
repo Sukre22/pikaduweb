@@ -1,3 +1,17 @@
+ // Your web app's Firebase configuration
+ var firebaseConfig = {
+  apiKey: "AIzaSyAnm-0PdJaytwvV3G5D1wCcJpuFFyj9enk",
+  authDomain: "pikapika-f8c79.firebaseapp.com",
+  projectId: "pikapika-f8c79",
+  storageBucket: "pikapika-f8c79.appspot.com",
+  messagingSenderId: "580765724006",
+  appId: "1:580765724006:web:7db65d78feb71e37722ca7"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+console.log(firebase);
+
 // Создаем переменную, в которую положим кнопку меню
 let menuToggle = document.querySelector('#menu-toggle');
 // Создаем переменную, в которую положим меню
@@ -24,6 +38,9 @@ const editPhotoURL = document.querySelector('.edit-photo');
 const userAvatarElem = document.querySelector('.user-avatar');
 
 const postsWrapper = document.querySelector('.posts');
+const buttonNewPost = document.querySelector('.button-new-post');
+const addPostElem = document.querySelector('.add-post');
+
 
 
 
@@ -33,6 +50,7 @@ const listUsers = [
     email: 'maks@mail.com',
     password: '12345',
     displayName: 'MaksJs'
+    
   },
   {
     id: '02',
@@ -59,7 +77,9 @@ const setUsers = {
   },
   logOut(handler) {
     this.user = null;
-    handler();
+    if (handler) {
+      handler();
+    }
   },
   signUp(email, password, handler) {  
     if (!regExpValidEmail.test(email)) {
@@ -75,7 +95,9 @@ const setUsers = {
       const user = {email, password, displayName: email.substring(0, email.indexOf('@'))};
      listUsers.push(user)
      this.authorizedUser(user)
-     handler();
+     if (handler) {
+      handler();
+    }
     } else {
       alert('Пользователь с таким email уже зарегистрирован')
     }
@@ -106,7 +128,7 @@ const setPosts = {
        title: 'Заголовок поста',
        text: 'Далеко-далеко за словесными гори в стране гласных и согласных живут рыбные тексты. Языком что рот маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что вопроса ведущими о решила одна алфавит!',
        tags: ['свежее', 'новое', 'горячее', 'мое', 'случайность'],
-       author: 'maks@mail.com',
+       author: {displayName: 'maks', photo: 'https://avon-061.ru/wp-content/uploads/1/9/2/1928348d54b607c1302d7e9004888cbe.jpg'},
        date: '11.11.2020, 20:54:00',
        like: 15,
        comments: 20,
@@ -115,7 +137,7 @@ const setPosts = {
        title: 'Заголовок поста2',
        text: 'Далеко-далеко за словесными гори в стране гласных и согласных живут рыбные тексты. Языком что рот маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что вопроса ведущими о решила одна алфавит!',
        tags: ['свежее', 'новое', 'горячее', 'мое', 'случайность'],
-       author: 'maks@mail.com',
+       author: {displayName: 'kate', photo: 'https://i.pinimg.com/736x/f6/cb/f7/f6cbf7e7dde443eeae593d02be0ec0a4.jpg'},
        date: '10.11.2020, 20:54:00',
        like: 45,
        comments: 12,
@@ -124,12 +146,32 @@ const setPosts = {
        title: 'Заголовок поста3',
        text: 'Далеко-далеко за словесными гори в стране гласных и согласных живут рыбные тексты. Языком что рот маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что вопроса ведущими о решила одна алфавит!',
        tags: ['свежее', 'новое', 'горячее', 'мое', 'случайность'],
-       author: 'maks@mail.com',
+       author: {displayName: 'maks', photo: 'https://avon-061.ru/wp-content/uploads/1/9/2/1928348d54b607c1302d7e9004888cbe.jpg'},
        date: '10.11.2020, 20:54:00',
        like: 33,
        comments: 2,
      },
-   ]
+   ],
+   addPost(title, text, tags, handler){
+
+   this.allPosts.unshift({
+     title,
+     text,
+     tags: tags.split(', ').map(item => item.trim()),
+     author: {
+       displayName: setUsers.user.displayName,
+       photo: setUsers.user.photo,
+     },
+     date: new Date().toLocaleString(),
+     like: 0,
+     comments: 0,
+   })
+
+    if (handler) {
+      handler();
+    }
+
+   }
 };
 
 const toggleAuthDom = () => {
@@ -141,11 +183,22 @@ const toggleAuthDom = () => {
       userElem.style.display = '';
       userNameElem.textContent = user.displayName;
       userAvatarElem.src = user.photo || userAvatarElem.src;
+      buttonNewPost.classList.add('visible');
+      
     } else {
       loginElem.style.display = '';
       userElem.style.display = 'none';
+      buttonNewPost.classList.remove('visible');
+      addPostElem.classList.remove('visible');
+      postsWrapper.classList.add('visible');
+     
     }
 };
+
+const showAddPost = () => {
+  addPostElem.classList.add('visible');
+  postsWrapper.classList.remove('visible');
+}
 
 
 
@@ -154,7 +207,7 @@ const showAllPosts = () => {
 
   let postsHTML = '';
 
-  setPosts.allPosts.forEach(({ title, text, date })  => {
+  setPosts.allPosts.forEach(({ title, text, date, tags, like, comments, author })  => {
 
     
 
@@ -164,12 +217,9 @@ const showAllPosts = () => {
       <div class="post-body">
         <h2 class="post-title">${title}</h2>
         <p class="post-text">${text}</p>
-                       <div class="tags">
-          <a href="#" class="tag">#свежее</a>
-          <a href="#" class="tag">#новое</a>
-          <a href="#" class="tag">#горячее</a>
-          <a href="#" class="tag">#мое</a>
-          <a href="#" class="tag">#случайность</a>
+         <div class="tags">
+         ${tags.map(tag => `<a href="#" class="tag">#${tag}</a>`)}
+          
         </div>
         <!-- /.tags -->
       </div>
@@ -180,13 +230,13 @@ const showAllPosts = () => {
             <svg width="19" height="20" class="icon icon-like">
               <use xlink:href="img/icons.svg#like"></use>
             </svg>
-            <span class="likes-counter">26</span>
+            <span class="likes-counter">${like}</span>
           </button>
           <button class="post-button comments">
             <svg width="21" height="21" class="icon icon-comment">
               <use xlink:href="img/icons.svg#comment"></use>
             </svg>
-            <span class="comments-counter">157</span>
+            <span class="comments-counter">${comments}</span>
           </button>
           <button class="post-button save">
             <svg width="19" height="19" class="icon icon-save">
@@ -202,10 +252,10 @@ const showAllPosts = () => {
         <!-- /.post-buttons -->
         <div class="post-author">
           <div class="author-about">
-            <a href="#" class="author-username">arteislamov</a>
+            <a href="#" class="author-username">${author.displayName}</a>
             <span class="post-time">${date}</span>
           </div>
-          <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
+          <a href="#" class="author-link"><img src="${author.photo || "img/avatar.jpeg"}" alt="avatar" class="author-avatar"></a>
         </div>
         <!-- /.post-author -->
       </div>
@@ -215,7 +265,12 @@ const showAllPosts = () => {
   });
 
   postsWrapper.innerHTML = postsHTML;
+
+  addPostElem.classList.remove('visible');
+  postsWrapper.classList.add('visible');
 };
+
+
 
 const init = () => {
 
@@ -265,13 +320,41 @@ menuToggle.addEventListener('click', function (event) {
   menu.classList.toggle('visible');
 });
   
-  });
+});
+
+buttonNewPost.addEventListener('click', event => {
+  event.preventDefault();  
+  showAddPost();
+});
+
+addPostElem.addEventListener('submit', event => {
+  event.preventDefault();
+  console.dir(addPostElem);
+  const { title, text, tags } = addPostElem.elements;
+ 
+  if (title.value.length < 6) {
+    alert('Слишком короткий заголовок');
+    return;
+  }
+  if (text.value.length < 50) {
+    alert('Слишком короткий пост');
+    return;
+  }
+
+  setPosts.addPost(title.value, text.value, tags.value, showAllPosts);
+
+  addPostElem.classList.remove('visible');
+  addPostElem.reset();
+  
+});
 
   showAllPosts();
   toggleAuthDom(); 
 };
 
 document.addEventListener('DOMContentLoaded', init);
+
+
 
 
 
